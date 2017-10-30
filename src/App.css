@@ -18,3 +18,17 @@ html, body {
     height: 100%;
     width: 100vw;
 }
+
+
+/* iOS overrides */
+button,
+textarea,
+input.text,
+input[type="text"],
+input[type="button"],
+input[type="submit"],
+.input-checkbox {
+  -webkit-appearance: none;
+  border-radius: 0;
+  border: none;
+}
