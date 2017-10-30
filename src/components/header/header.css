@@ -1,0 +1,10 @@
+.header {
+  max-height: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.header-text {
+  margin: 0 auto;
+}

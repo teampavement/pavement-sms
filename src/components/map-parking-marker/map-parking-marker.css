@@ -1,0 +1,36 @@
+.map-parking-marker {
+  display: 'flex';
+  flex-direction: 'column';
+  align-items: 'center';
+  justify-content: 'center';
+}
+
+.map-parking-marker-tip {
+  min-width: 30;
+  height: 30;
+  background-color: '#4A90E2';
+  align-items: 'center';
+  justify-content: 'center';
+  border-radius: 10;
+  padding: 10;
+}
+
+.map-parking-marker-tip-tail {
+  color: 'white';
+  font-size: 25;
+  font-weight: 'bold';
+}
+
+.map-parking-marker-tail {
+  width: 0;
+  height: 0;
+  border-style: 'solid';
+  border-top-width: 30;
+  border-top-color: '#4A90E2';
+  border-right-width: 7.5;
+  border-right-color: 'transparent';
+  border-bottom-width: 0;
+  border-bottom-color: 'transparent';
+  border-left-width: 7.5;
+  border-left-color: 'transparent';
+}
