@@ -1,10 +1,19 @@
 .header {
-  max-height: 60px;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  height: 40px;
+  width: 100%;
+  background-color: #F4E04D;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
 }
 
 .header-text {
+  vertical-align: middle;
+  font-size: 20px;
+  font-weight: bold;
   margin: 0 auto;
 }

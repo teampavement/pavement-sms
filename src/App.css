@@ -4,6 +4,7 @@
   width: 100%;
   margin: 0 auto;
   z-index: 0;
+  margin-top: 40px;
 }
 
 /*.carto-map {
@@ -13,6 +14,7 @@
 body {
     padding: 0;
     margin: 0;
+    background-color: #EBE9E9
 }
 html, body {
     height: 100%;
@@ -31,4 +33,10 @@ input[type="submit"],
   -webkit-appearance: none;
   border-radius: 0;
   border: none;
+  background: none;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
 }

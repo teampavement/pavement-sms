@@ -25,9 +25,9 @@ const REGULAR_STYLE = {
 }
 
 const HIGHLIGHTED_STYLE = {
-    "color": "orange",
+    "color": "#F4E04D",
     "weight": 7,
-    "opacity": 0.65,
+    "opacity": 0.75,
     "transform": "scale(1.1)"
 }
 
@@ -75,7 +75,7 @@ class MapView extends Component {
     }
 
     render() {
-      let geoJSONDataPolygon = this.props.viewport.zoom !== 18 &&
+      let geoJSONDataPolygon = this.props.viewport.zoom < 15 &&
         bboxPolygon((bbox(this.props.geoJSONData)));
 
       return (
@@ -90,12 +90,12 @@ class MapView extends Component {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
           />
-          {this.props.viewport.zoom === 18 &&
+          {this.props.viewport.zoom >= 15 &&
           <GeoJSON key={Math.random()}
                    data={this.props.geoJSONData}
                    style={this.getStyle}
           />}
-          {this.props.viewport.zoom !== 18 &&
+          {this.props.viewport.zoom < 15 &&
           <GeoJSON key={Math.random()}
                    data={geoJSONDataPolygon}
           />}

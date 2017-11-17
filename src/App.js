@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
+
+import pointToLineDistance from '@turf/point-to-line-distance';
+import {point, lineString} from '@turf/helpers';
 import './App.css';
+
 import MapView from './components/map-view';
 import Signup from './components/signup';
 import Header from './components/header';
 
-import pointToLineDistance from '@turf/point-to-line-distance';
-import {point, lineString} from '@turf/helpers';
+import StreetToString from './common/street-to-string';
 
 import geojsonApi from './services/geojson-api';
-import rulesEngineAPI from './services/rules-engine-api';
+import canParkAPI from './services/rules-engine-api/can-park';
+import setReminderAPI from './services/rules-engine-api/set-reminder';
 import smsAPI from './services/sms-api';
 const jc = geojsonApi();
 
@@ -17,7 +21,7 @@ const DEFAULT_CENTER = {
   lng: -74.0474224090576,
 };
 
-const DEFAULT_ZOOM = 13;
+const DEFAULT_ZOOM = 14;
 
 const DEFAULT_VIEWPORT = {
   center: [DEFAULT_CENTER.lat, DEFAULT_CENTER.lng],
@@ -31,7 +35,7 @@ class App extends Component {
       viewport: DEFAULT_VIEWPORT,
       latLngBounds: {},
       selectedStreet: {},
-      highlightedStreet: {},
+      highlightedStreet: null,
       canPark: false,
       streetSelected: false,
       phoneNumber: "",
@@ -55,7 +59,7 @@ class App extends Component {
     }
     if (viewport.zoom !== 18) {
       this.setState({
-        highlightedStreet: {}
+        highlightedStreet: null
       })
     }
     this.setState({
@@ -72,9 +76,12 @@ class App extends Component {
     }
     if (viewport.zoom !== 18) {
       this.setState({
-        highlightedStreet: {}
+        highlightedStreet: null
       })
+    } else {
+      // call canPark
     }
+
     this.setState({
       viewport,
       latLngBounds: mapRef.leafletElement.getBounds()
@@ -82,7 +89,7 @@ class App extends Component {
   }
 
   findNearestLine () {
-    if (this.state.viewport.zoom !== 18) {
+    if (this.state.viewport.zoom < 17) {
       return;
     }
     let viewportCenterFlipped = [this.state.viewport.center[1], this.state.viewport.center[0]];
@@ -102,9 +109,13 @@ class App extends Component {
     });
 
     const streetNearestToCenter = jc.features[minDistanceIndex];
-
+    if (streetNearestToCenter === this.state.highlightedStreet) {
+      return;
+    }
     // calculate canPark
-    let canPark = rulesEngineAPI(streetNearestToCenter, new Date());
+    let canPark = canParkAPI({
+      streetNearestToCenter
+    });
 
     this.setState({
       highlightedStreet: streetNearestToCenter,
@@ -113,9 +124,11 @@ class App extends Component {
   }
 
   handleStreetSelected() {
-    this.setState({
-      streetSelected: true
-    });
+    if (this.state.canPark) {
+      this.setState({
+        streetSelected: true
+      });
+    }
   }
 
   handlePhoneNumberChanged(e) {
@@ -131,10 +144,16 @@ class App extends Component {
     //   smsPending: true
     // });
     // fire api call
-    smsAPI();
-    // change to sent
-    this.setState({
-      smsSent: true
+    smsAPI('', 'POST', {
+      phone: this.state.phoneNumber,
+      street: this.state.highlightedStreet
+    }).then(() => {
+      // change to sent
+      this.setState({
+        smsSent: true
+      });
+    }, () => {
+
     });
   }
 
@@ -169,6 +188,14 @@ class App extends Component {
           findNearestLine={this.findNearestLine}
           geoJSONData={jc}
         />
+        <div class="signup-card-main-text">
+          {
+            this.state.highlightedStreet &&
+            this.state.highlightedStreet.properties &&
+            StreetToString.fullStreetName(this.state.highlightedStreet)
+          }
+        </div>
+        <div className="signup-card-help-text">Make sure to select the exact curb where you're parked!</div>
         <Signup
           {...this.state}
           handleStreetSelected={this.handleStreetSelected}

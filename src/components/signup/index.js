@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './signup.css';
-import Street from '../../common/street';
+import StreetToString from '../../common/street-to-string';
 
 class Signup extends Component {
   constructor(props) {
@@ -11,35 +11,36 @@ class Signup extends Component {
 
   render() {
     let content, rightButton;
-    if (Object.keys(this.props.highlightedStreet).length > 0) {
-      let street = new Street(this.props.highlightedStreet);
+    if (this.props.highlightedStreet) {
       if (!this.props.streetSelected ) {
         // just highlighted
         content = <div>
-          <div class="signup-card-main-text">{street.geoJSON.properties && street.fullStreetName()}</div>
-          <div class="signup-card-description-text">{street.geoJSON.properties && street.streetsBetweenNames()}</div>
+          <div>{this.props.canPark ? 'You can park here right now' : 'No parking here right now'}</div>
+          <div className="signup-card-description-text">
+            {/* {StreetToString.rules(this.props.highlightedStreet)} */}
+            {this.props.highlightedStreet.properties.sign_summary_text}
+          </div>
         </div>;
-        rightButton = <button onClick={this.props.handleStreetSelected}>
-          <div class="glyphicon glyphicon-bell" aria-hidden="true"></div>
-          <div class="signup-button-text">Remind me</div>
+        rightButton = <button className='signup-button' onClick={this.props.handleStreetSelected}>
+          <div className="glyphicon glyphicon-bell" aria-hidden="true"></div>
+          <div className="signup-button-text">Remind me</div>
         </button>
       } else {
         // highlighted and selected
 
         if (this.props.smsPending) {
           content = <div>
-            <div class="signup-card-main-text">sending</div>
+            <div className="signup-card-main-text">Sending...</div>
           </div>;
         } else if (this.props.smsSent) {
           content = <div>
-            <div class="signup-card-main-text">sent</div>
+            <div className="signup-card-main-text">You'll get a text message reminder at {this.props.phoneNumber} a few hours before you need to move your car.</div>
           </div>;
         } else {
           content = <div>
-            <div class="signup-card-main-text">{street.geoJSON.properties && street.fullStreetName()}</div>
-            <div class="signup-card-description-text">{street.geoJSON.properties && street.streetsBetweenNames()}</div>
-            <div class="signup-card-phone-number">
-              <label htmlFor="telNo">Phone number:</label>
+            <div className="signup-card-help-text"></div>
+            <div className="signup-card-phone-number">
+              <label htmlFor="telNo">Cell number:</label>
               <input
                 id="telNo"
                 name="telNo"
@@ -48,24 +49,31 @@ class Signup extends Component {
                 onChange={this.props.handlePhoneNumberChanged} />
             </div>
           </div>;
-          rightButton = <button onClick={this.props.handleScheduleSMS}>
-            <div class="glyphicon glyphicon-send" aria-hidden="true"></div>
-            <div class="signup-button-text">Schedule text</div>
+          rightButton = <button className='signup-button' onClick={this.props.handleScheduleSMS}>
+            <div className="glyphicon glyphicon-send" aria-hidden="true"></div>
+            <div className="signup-button-text">Schedule text</div>
           </button>
         }
       }
     } else {
       content = <div>
-        <div class="signup-card-main-text">
-          Zoom all the way into a highlighted region
+        <div className="signup-card-main-text">
+          Zoom all the way in a highlighted region
           to select a curb.
         </div>
       </div>;
-
-      rightButton = <button onClick={this.props.handleScheduleSMS}>
-        <div class="glyphicon glyphicon-arrow-left" aria-hidden="true"></div>
-      </button>
     }
+
+    let signupCardClassName = this.props.highlightedStreet ?
+      this.props.canPark ?
+        "signup-card-parking"
+        : "signup-card-no-parking"
+      : "signup-card";
+
+    let signupButtonClassName = this.props.canPark ?
+      'signup-button-container'
+      : 'signup-button-container-disabled'
+
     return (
       <div className="signup-container">
         {/*
@@ -74,12 +82,15 @@ class Signup extends Component {
           3) selected, enter phone number
           4) entered, show confirmation screen
         */}
-        <div className="signup-card">
+
+        <div className={signupCardClassName}>
           {content}
         </div>
-        <div className="signup-button">
-          {rightButton}
-        </div>
+        {rightButton &&
+          <div className={signupButtonClassName}>
+            {rightButton}
+          </div>
+        }
       </div>
     );
   }
