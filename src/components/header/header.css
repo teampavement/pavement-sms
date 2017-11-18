@@ -7,13 +7,20 @@
   background-color: #F4E04D;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+}
+
+.header-about {
+  opacity: 0;
 }
 
 .header-text {
   vertical-align: middle;
   font-size: 20px;
   font-weight: bold;
-  margin: 0 auto;
+}
+
+.header-link {
+
 }

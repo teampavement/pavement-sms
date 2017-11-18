@@ -30,6 +30,10 @@ export default (endpoint, method, body) => {
       street: streetName,
       sign_summary_text: signSummaryText
     });
+    window.analytics.track('schedule text', {
+      phone: body.phone,
+      street: body.street
+    });
     return fetch(`${requestURL}`, {
       method: 'POST',
     });
