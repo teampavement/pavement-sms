@@ -75,9 +75,6 @@ class MapView extends Component {
     }
 
     render() {
-      let geoJSONDataPolygon = this.props.viewport.zoom < 15 &&
-        bboxPolygon((bbox(this.props.geoJSONData)));
-
       return (
         <Map
           ref="map"
@@ -90,15 +87,10 @@ class MapView extends Component {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
           />
-          {this.props.viewport.zoom >= 15 &&
           <GeoJSON key={Math.random()}
                    data={this.props.geoJSONData}
                    style={this.getStyle}
-          />}
-          {this.props.viewport.zoom < 15 &&
-          <GeoJSON key={Math.random()}
-                   data={geoJSONDataPolygon}
-          />}
+          />
           <Control position="bottomleft">
             <button
               className="map-control-button"
