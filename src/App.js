@@ -215,7 +215,10 @@ class App extends Component {
             StreetToString.fullStreetName(this.state.highlightedStreet)
           }
         </div>
-        <div className="signup-card-help-text">Make sure to select the exact curb where you're parked!</div>
+        <div className="signup-card-help-text">
+          <p><b>Drag the map. The curb closest to the center will be highlighted automatically.</b></p>
+          Make sure to select the exact curb where you're parked!
+        </div>
         <Signup
           {...this.state}
           handleStreetSelected={this.handleStreetSelected}
