@@ -52,7 +52,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    window.analytics.page();
+    if (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_DEV) {
+      window.analytics.page();
+    }
   }
 
   handleViewportChange = (viewport, mapRef) => {
@@ -73,9 +75,11 @@ class App extends Component {
   }
 
   handleViewportChanged = (viewport, mapRef) => {
-    window.analytics.track('map viewport changed', {
-      viewport: viewport
-    });
+    if (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_DEV) {
+      window.analytics.track('map viewport changed', {
+        viewport: viewport
+      });
+    }
     if (this.state.streetSelected) {
       this.setState({
         streetSelected: false
@@ -124,9 +128,11 @@ class App extends Component {
       streetNearestToCenter
     });
 
-    window.analytics.track('street highlighted', {
-      street: streetNearestToCenter
-    });
+    if (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_DEV) {
+      window.analytics.track('street highlighted', {
+        street: streetNearestToCenter
+      });
+    }
 
     this.setState({
       highlightedStreet: streetNearestToCenter,
@@ -135,9 +141,11 @@ class App extends Component {
   }
 
   handleStreetSelected() {
-    window.analytics.track('street selected', {
-      street: this.state.highlightedStreet
-    });
+    if (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_DEV) {
+      window.analytics.track('street selected', {
+        street: this.state.highlightedStreet
+      });
+    }
     if (this.state.canPark) {
       this.setState({
         streetSelected: true
@@ -172,13 +180,17 @@ class App extends Component {
   }
 
   handleGeoLocation() {
-    window.analytics.track('geolocation called', {
-    });
+    if (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_DEV) {
+      window.analytics.track('geolocation called', {
+      });
+    }
 
     const setNewCenter = (self, position) => {
-      window.analytics.track('geolocation returned', {
-        position: position
-      });
+      if (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_DEV) {
+        window.analytics.track('geolocation returned', {
+          position: position
+        });
+      }
       self.setState({
         viewport: {
           center: [position.coords.latitude, position.coords.longitude]
