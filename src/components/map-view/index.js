@@ -9,7 +9,6 @@ import {
   Polyline
 } from 'react-leaflet';
 import Control from 'react-leaflet-control';
-import 'react-leaflet-fullscreen/dist/styles.css';
 import bbox from '@turf/bbox';
 import bboxPolygon from '@turf/bbox-polygon';
 
