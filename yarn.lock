@@ -3921,9 +3921,15 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-leaflet.fullscreen@^1.4.x:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/leaflet.fullscreen/-/leaflet.fullscreen-1.4.3.tgz#80f8a6310fab760a16808cd7aede66da5cdbb9ce"
+leaflet-geojson-cluster@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/leaflet-geojson-cluster/-/leaflet-geojson-cluster-0.0.4.tgz#08bfcdcbe36da4280d14f166fdccc870e2ebc2b6"
+  dependencies:
+    leaflet "^0.7.3"
+
+leaflet@^0.7.3:
+  version "0.7.7"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-0.7.7.tgz#1e352ba54e63d076451fa363c900890cb2cf75ee"
 
 leaflet@^1.2.0:
   version "1.2.0"
@@ -5231,11 +5237,18 @@ react-leaflet-control@^1.4.0:
   dependencies:
     prop-types "^15.5.7"
 
-react-leaflet-fullscreen@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/react-leaflet-fullscreen/-/react-leaflet-fullscreen-0.0.5.tgz#9bb1fb0ee9e72c5be8526bf832843965bcec9442"
+react-leaflet-geojson-cluster@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/react-leaflet-geojson-cluster/-/react-leaflet-geojson-cluster-0.1.8.tgz#a11ac85669498dc2a7a92ed23c8f18631da4c56b"
   dependencies:
-    leaflet.fullscreen "^1.4.x"
+    leaflet-geojson-cluster "0.0.4"
+    react-leaflet "^0.10.2"
+
+react-leaflet@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-0.10.2.tgz#fa10486656f7eb4bd288d60baf806525784db984"
+  dependencies:
+    lodash "^4.0.0"
 
 react-leaflet@^1.7.1:
   version "1.7.1"

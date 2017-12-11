@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import pointToLineDistance from '@turf/point-to-line-distance';
 import {point, lineString} from '@turf/helpers';
 import './App.css';
+import pin from './pin-white.png';
 
 import MapView from './components/map-view';
 import Signup from './components/signup';
@@ -21,7 +22,7 @@ const DEFAULT_CENTER = {
   lng: -74.0474224090576,
 };
 
-const DEFAULT_ZOOM = 14;
+const DEFAULT_ZOOM = 16;
 
 const DEFAULT_VIEWPORT = {
   center: [DEFAULT_CENTER.lat, DEFAULT_CENTER.lng],
@@ -44,6 +45,7 @@ class App extends Component {
     };
     this.handleViewportChange = this.handleViewportChange.bind(this);
     this.handleViewportChanged = this.handleViewportChanged.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.findNearestLine = this.findNearestLine.bind(this);
     this.handleStreetSelected = this.handleStreetSelected.bind(this);
     this.handleScheduleSMS = this.handleScheduleSMS.bind(this);
@@ -80,18 +82,6 @@ class App extends Component {
         viewport: viewport
       });
     }
-    if (this.state.streetSelected) {
-      this.setState({
-        streetSelected: false
-      });
-    }
-    if (viewport.zoom !== 18) {
-      this.setState({
-        highlightedStreet: null
-      })
-    } else {
-      // call canPark
-    }
 
     this.setState({
       viewport,
@@ -99,8 +89,31 @@ class App extends Component {
     });
   }
 
-  findNearestLine () {
+  handleClick = (latlng, mapRef) => {
+    if (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_DEV) {
+      window.analytics.track('map clicked', {
+      });
+    }
+    if (this.state.streetSelected) {
+      this.setState({
+        streetSelected: false
+      });
+    }
     if (this.state.viewport.zoom < 17) {
+      const newCenter = [latlng.lat, latlng.lng];
+      this.setState({
+        viewport: {
+          center: newCenter,
+          zoom: 18
+        }
+      });
+    }
+
+    // zoom in?
+  }
+
+  findNearestLine (clickedPoint = null) {
+    if (!clickedPoint && this.state.viewport.zoom < 17) {
       return;
     }
     let viewportCenterFlipped = [this.state.viewport.center[1], this.state.viewport.center[0]];
@@ -108,34 +121,36 @@ class App extends Component {
     // since geojson is in [long, lat] format
     // even though leaflet returns [lat, long] for its viewport center
 
-    let centerPoint = point(viewportCenterFlipped);
+    let initialPoint = clickedPoint ?
+      point([clickedPoint.lng, clickedPoint.lat])
+      : point(viewportCenterFlipped);
     let minDistance = Number.MAX_SAFE_INTEGER;
     let minDistanceIndex = -1;
     jc.features.map((line, index) => {
-      let distance = pointToLineDistance(centerPoint, line, {mercator: true});
+      let distance = pointToLineDistance(initialPoint, line, {mercator: true});
       if (distance < minDistance) {
         minDistance = distance;
         minDistanceIndex = index;
       }
     });
 
-    const streetNearestToCenter = jc.features[minDistanceIndex];
-    if (streetNearestToCenter === this.state.highlightedStreet) {
+    const streetNearestToClick = jc.features[minDistanceIndex];
+    if (streetNearestToClick === this.state.highlightedStreet) {
       return;
     }
     // calculate canPark
     let canPark = canParkAPI({
-      streetNearestToCenter
+      street: streetNearestToClick
     });
 
     if (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_DEV) {
       window.analytics.track('street highlighted', {
-        street: streetNearestToCenter
+        street: streetNearestToClick
       });
     }
 
     this.setState({
-      highlightedStreet: streetNearestToCenter,
+      highlightedStreet: streetNearestToClick,
       canPark
     });
   }
@@ -193,7 +208,8 @@ class App extends Component {
       }
       self.setState({
         viewport: {
-          center: [position.coords.latitude, position.coords.longitude]
+          center: [position.coords.latitude, position.coords.longitude],
+          zoom: 17
         }
       });
     }
@@ -209,34 +225,50 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Header />
-        <MapView
-          className="map-container"
-          {...this.state}
-          handleViewportChange={this.handleViewportChange}
-          handleViewportChanged={this.handleViewportChanged}
-          handleGeoLocation={this.handleGeoLocation}
-          findNearestLine={this.findNearestLine}
-          geoJSONData={jc}
-        />
-        <div class="signup-card-main-text">
-          {
-            this.state.highlightedStreet &&
-            this.state.highlightedStreet.properties &&
-            StreetToString.fullStreetName(this.state.highlightedStreet)
-          }
+      <div>
+        {/* <div class="pin-container"
+          style={{position: 'absolute',
+            height: '100vh',
+            width: '100vw',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'transparent',
+            zIndex: 10,
+            pointerEvents: 'none'
+          }}>
+          <img src={pin} width={25} height={40} style={{
+            width: 25,
+            height: 40,
+            pointerEvents: 'none',
+            objectFit: 'contain'
+          }}/>
+        </div> */}
+        <div className="App">
+          <Header />
+          <MapView
+            className="map-container"
+            {...this.state}
+            handleViewportChange={this.handleViewportChange}
+            handleViewportChanged={this.handleViewportChanged}
+            handleGeoLocation={this.handleGeoLocation}
+            findNearestLine={this.findNearestLine}
+            geoJSONData={jc}
+            handleClick={this.handleClick}
+          />
+          {/* <div class="signup-card-main-text">
+            {
+              this.state.highlightedStreet &&
+              this.state.highlightedStreet.properties &&
+              StreetToString.fullStreetName(this.state.highlightedStreet)
+            }
+          </div>
+          <Signup
+            {...this.state}
+            handleStreetSelected={this.handleStreetSelected}
+            handleScheduleSMS={this.handleScheduleSMS}
+            handlePhoneNumberChanged={this.handlePhoneNumberChanged}
+          /> */}
         </div>
-        <div className="signup-card-help-text">
-          <p><b>Drag the map. The curb closest to the center will be highlighted automatically.</b></p>
-          Make sure to select the exact curb where you're parked!
-        </div>
-        <Signup
-          {...this.state}
-          handleStreetSelected={this.handleStreetSelected}
-          handleScheduleSMS={this.handleScheduleSMS}
-          handlePhoneNumberChanged={this.handlePhoneNumberChanged}
-        />
       </div>
     );
   }

@@ -1,10 +1,10 @@
 .carto-map {
-  height: 400px;
   max-width: 750px;
   width: 100%;
   margin: 0 auto;
   z-index: 0;
   margin-top: 40px;
+  bottom: 0;
 }
 
 /*.carto-map {
@@ -39,4 +39,12 @@ input[type="submit"],
 .App {
   display: flex;
   flex-direction: column;
+}
+
+.pin-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
