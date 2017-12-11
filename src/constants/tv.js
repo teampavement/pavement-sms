@@ -3150,92 +3150,6 @@ export const tv = {
     {
       "type": "Feature",
       "properties": {
-        "street_name": "Newark",
-        "street_suffix": "Avenue",
-        "sign_summary_text": "No Parking",
-        "permit_zone": "NA",
-        "signs": [
-          {
-            "sign_title": "No Parking",
-            "sign_applies_to_permit_holder": true,
-            "sign_time_range": [
-              {
-                "start_time": "0000",
-                "end_time": "2359"
-              }
-            ],
-            "sign_days": [
-              "M",
-              "Tu",
-              "W",
-              "Th",
-              "F",
-              "Sa",
-              "Su"
-            ]
-          }
-        ]
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -74.05175149440765,
-            40.725341958056745
-          ],
-          [
-            -74.05092805624007,
-            40.72457155994158
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "street_name": "Newark",
-        "street_suffix": "Avenue",
-        "sign_summary_text": "No Parking",
-        "permit_zone": "NA",
-        "signs": [
-          {
-            "sign_title": "No Parking",
-            "sign_applies_to_permit_holder": true,
-            "sign_time_range": [
-              {
-                "start_time": "0000",
-                "end_time": "2359"
-              }
-            ],
-            "sign_days": [
-              "M",
-              "Tu",
-              "W",
-              "Th",
-              "F",
-              "Sa",
-              "Su"
-            ]
-          }
-        ]
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -74.05164152383804,
-            40.72530536942977
-          ],
-          [
-            -74.05083149671555,
-            40.724559363593656
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "street_name": "2nd",
         "street_suffix": "Street",
         "sign_summary_text": "No Parking",
@@ -3649,7 +3563,7 @@ export const tv = {
         "street_name": "Monmouth",
         "street_suffix": "Street",
         "sign_summary_text": "No Parking",
-        "permit_zone": "0",
+        "permit_zone": 0,
         "signs": [
           {
             "sign_title": "No Parking",
@@ -3692,7 +3606,7 @@ export const tv = {
         "street_name": "Monmouth",
         "street_suffix": "Street",
         "sign_summary_text": "No Parking",
-        "permit_zone": "0",
+        "permit_zone": 0,
         "signs": [
           {
             "sign_title": "No Parking",
@@ -3735,7 +3649,7 @@ export const tv = {
         "street_name": "Monmouth",
         "street_suffix": "Street",
         "sign_summary_text": "No Parking",
-        "permit_zone": "0",
+        "permit_zone": 0,
         "signs": [
           {
             "sign_title": "No Parking",
@@ -3782,7 +3696,7 @@ export const tv = {
         "street_name": "Monmouth",
         "street_suffix": "Street",
         "sign_summary_text": "No Parking",
-        "permit_zone": "0",
+        "permit_zone": 0,
         "signs": [
           {
             "sign_title": "No Parking",
@@ -3829,7 +3743,7 @@ export const tv = {
         "street_name": "Monmouth",
         "street_suffix": "Street",
         "sign_summary_text": "No Parking",
-        "permit_zone": "0",
+        "permit_zone": 0,
         "signs": [
           {
             "sign_title": "No Parking",
@@ -3872,7 +3786,7 @@ export const tv = {
         "street_name": "Monmouth",
         "street_suffix": "Street",
         "sign_summary_text": "No Parking",
-        "permit_zone": "0",
+        "permit_zone": 0,
         "signs": [
           {
             "sign_title": "No Parking",
@@ -4123,7 +4037,7 @@ export const tv = {
         "street_name": "Coles",
         "street_suffix": "Street",
         "sign_summary_text": "No Parking",
-        "permit_zone": "0",
+        "permit_zone": 0,
         "signs": [
           {
             "sign_title": "No Parking",
@@ -4166,7 +4080,7 @@ export const tv = {
         "street_name": "Coles",
         "street_suffix": "Street",
         "sign_summary_text": "No Parking",
-        "permit_zone": "0",
+        "permit_zone": 0,
         "signs": [
           {
             "sign_title": "No Parking",
@@ -4209,7 +4123,7 @@ export const tv = {
         "street_name": "Brunswick",
         "street_suffix": "Street",
         "sign_summary_text": "No Parking",
-        "permit_zone": "0",
+        "permit_zone": 0,
         "signs": [
           {
             "sign_title": "No Parking",
