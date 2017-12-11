@@ -4,7 +4,7 @@ import { dayIndex } from '../../constants/days';
 const canParkAPI = (body) => {
   /*
    * body.currentTime
-   * body.streetNearestToCenter
+   * body.street
   */
   /*
     strategy here:
@@ -22,14 +22,14 @@ const canParkAPI = (body) => {
     dateObj = moment(body.currentTime);
   }
 
-  if (body.streetNearestToCenter
-    && body.streetNearestToCenter.properties.signs) {
+  if (body.street
+    && body.street.properties.signs) {
 
     let followsAllRestrictions = ((dateObj) => {
         const weekday = dateObj.day();
-        const permitZone = body.streetNearestToCenter.properties.permit_zone;
+        const permitZone = body.street.properties.permit_zone;
 
-        return body.streetNearestToCenter.properties.signs.every((sign) => {
+        return body.street.properties.signs.every((sign) => {
           let followsRestrictions = true;
 
           let daysActive = sign.sign_days.map(day => dayIndex[day]);
